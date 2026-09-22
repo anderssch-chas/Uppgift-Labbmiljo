@@ -67,15 +67,17 @@ och sedan ställs behörigheter för mappen och filen in med kommandot
 <img src="images/Bash_4_ls.png" width="350" alt="Bash ls">
 1. Till sist verifieras nätverksanslutningen genom att pinga till Windows-VM:en
 <img src="images/Bash_5_ping.png" width="350" alt="Bash ping">  
-Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop.  
-<img src="images/Windows_firewall.png" width="350" alt="Firewall settings">
+
 
 
 ### Windows, powershell-kommandon
 
 <img src="images/Powershell_1_mkdir.png" width="350" alt="Powershell mkdir">
 <img src="images/Powershell_3_ping.png" width="350" alt="Powershell ping">
-<img src="images/Powershell_3_ipconfig.png" width="350" alt="Powershell ipconfig">
+<img src="images/Powershell_3_ipconfig.png" width="350" alt="Powershell ipconfig">  
+
+Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop från Linux-maskinen. AI föreslår att man stänger av brandväggen, men jag valde istället att öppna endast den regel som behövdes med kommandot `Enable-NetFirewallrule -Name "FPS-ICMP4-ERQ-In"`  
+<img src="images/Windows_firewall.png" width="350" alt="Windows firewall">
 
 
 
