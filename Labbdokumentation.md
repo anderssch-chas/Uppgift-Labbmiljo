@@ -102,3 +102,79 @@ Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop från Linux
 ## AI-logg och Utvärdering
 *Prompt, AI-utdata och din kritiska granskning.*
 
+Prompt: ```Förklara hur man använder Get-Acl```
+
+AI-utdata:
+> Get-Acl är ett PowerShell-kommando som används för att läsa behörigheter (ACL – Access Control List) på filer, mappar och andra objekt i Windows.
+Grundläggande användning
+>
+> Get-Acl "C:\Test\fil.txt"
+> 
+> Det visar bland annat vem som äger objektet och vilka åtkomstregler som finns.
+>
+>För en mapp:
+>
+>Get-Acl "C:\Test"
+>
+>Visa själva behörighetsreglerna
+>
+>Den viktigaste egenskapen är Access:
+>
+>(Get-Acl "C:\Test").Access
+>
+>Du får exempelvis information om:
+>
+>     IdentityReference – användaren eller gruppen
+> 
+>     FileSystemRights – vilka rättigheter de har
+> 
+>     AccessControlType – Allow eller Deny
+> 
+>     IsInherited – om regeln ärvs från en överordnad mapp
+> 
+>     InheritanceFlags – hur regeln ärvs
+>   
+> Ett typiskt resultat kan se ut ungefär så här:
+>
+> IdentityReference : CONTOSO\Users
+FileSystemRights  : ReadAndExecute, Synchronize
+AccessControlType : Allow
+IsInherited       : True
+> 
+> Använda variabel
+> 
+> Det är ofta praktiskt att spara ACL:en i en variabel:
+> 
+> $acl = Get-Acl "C:\Test"
+> 
+> Sedan kan du exempelvis göra:
+> 
+> $acl.Owner
+> 
+> för att se ägaren, eller:
+> 
+> $acl.Access
+> 
+> för att se åtkomstreglerna.
+Söka efter en viss användare
+> 
+> (Get-Acl "C:\Test").Access |
+>     Where-Object { $_.IdentityReference -like "*Anna*" }
+> 
+> Viktigt: Get-Acl ändrar inget
+> 
+> Get-Acl är i första hand ett läs-kommando. Det hämtar den aktuella ACL:en men ändrar inte behörigheterna.
+> 
+> För att ändra behörigheter används exempelvis:
+> 
+> Set-Acl
+> 
+> Ett vanligt arbetsflöde är därför:
+> 
+> $acl = Get-Acl "C:\Test"
+> 
+> #undersök eller ändra $acl
+> 
+> Set-Acl "C:\Test" $acl
+> 
+> Om du vill kan jag också visa hur Get-Acl och Set-Acl används tillsammans för att ge en användare t.ex. Read, Modify eller Full Control, inklusive vad InheritanceFlags och PropagationFlags betyder.
