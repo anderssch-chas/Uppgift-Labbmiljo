@@ -98,6 +98,10 @@ Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop från Linux
 
 ## Git och Versionshantering
 
+[Git-repository](https://github.com/anderssch-chas/Uppgift-Labbmiljo/blob/main/Labbdokumentation.md)
+
+<img src="images/git_log.png" width="450" alt="git log --oneline">
+
 
 ## AI-logg och Utvärdering
 
