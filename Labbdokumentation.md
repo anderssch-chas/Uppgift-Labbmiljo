@@ -100,7 +100,8 @@ Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop från Linux
 
 
 ## AI-logg och Utvärdering
-*Prompt, AI-utdata och din kritiska granskning.*
+
+### Prompt och AI-utdata 
 
 Prompt: ```Förklara hur man använder Get-Acl```
 
@@ -177,4 +178,11 @@ Söka efter en viss användare
 > 
 > Set-Acl "C:\Test" $acl
 > 
-> Om du vill kan jag också visa hur Get-Acl och Set-Acl används tillsammans för att ge en användare t.ex. Read, Modify eller Full Control, inklusive vad InheritanceFlags och PropagationFlags betyder.
+> Om du vill kan jag också visa hur Get-Acl och Set-Acl används tillsammans för att ge en användare t.ex. Read, Modify eller Full Control, inklusive vad InheritanceFlags och PropagationFlags betyder.  
+
+### Granskning av svaret
+
+Jag brukar verifiera svaren genom att söka efter samma sak i officella manualer och guider, som "man *något kommando*" i Linux eller att söka på learn.microsoft.com i detta fall när det gäller powershell.  
+En annan användbar metod är att be AI om källor på det svar den just gav. Ibland rättar den sig efter att ha granskat sin egen källa. I detta fallet var källan uteslutande learn.microsoft.com och vad jag kan se så är informationen korrekt.  
+En fördel med en AI som beskriver kommandot är att det blir lättare att läsa förklaringen när den fylls ut med "vanlig språk", de officiella manualerna kan lätt bli väldigt tekniska och tunga att läsa.  
+Jag försökte även några andra sökningar för att hitta ett exempel på hallucinationer, men troligen är grundläggande kommandoradskommandon för enkelt att hitta rätt svar på. 
