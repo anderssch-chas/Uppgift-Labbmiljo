@@ -14,9 +14,8 @@ Dokumentationen är uppdelad i följande delar:
 ## Labbmiljö och Nätverk
 
 Labbmiljön är uppsatt i **Virtualbox**.   
-En maskin kör Ubuntu Server 24.04 och en kör Windows 11 Pro.  
-Båda maskinernas nätverksinställningar är satta till **Host-Only**  
-för att isolera trafiken och möjliggöra intern kommunikation.  
+En maskin kör Ubuntu Server 24.04 och en kör Windows 11 Pro (tredje och fjärde maskinen i bilden).  
+Båda maskinernas nätverksinställningar är satta till **Host-Only** för att isolera trafiken och möjliggöra intern kommunikation. Maskinerna ska tilldelas IP-adresser enligt tabellen nedan.   
 
 <img src="images/Virtualbox_settings.png" width="350" alt="Virtualbox settings">
 
@@ -28,11 +27,12 @@ för att isolera trafiken och möjliggöra intern kommunikation.
 
 ### Konfiguration av maskinerna
 
-På Linux-servern konstateras att nätverksenheten heter "enp0s3" med komanndot `ip a`  
-IP adressen konfigureras sedan med kommandot:  
+På Linux-servern konstateras att nätverksenheten heter "enp0s3" med kommandot,  
+`ip a`  
+IP-adressen konfigureras sedan med kommandot,  
 `sudo ip addr add 192.168.1.50/24 dev enop0s3`
 
-<img src="images/Bash_IP_config.png" width="350" alt="Bash IP config">
+<img src="images/Bash_IP_config.png" width="450" alt="Bash IP config">
 
 
 För motsvarande i Windows behöver man först öppna Powershell som administratör, sedan sätts IP adressen med kommandot:  
@@ -43,41 +43,56 @@ För motsvarande i Windows behöver man först öppna Powershell som administrat
 
 
 ## Kommandoradsgenomförande
-*Steg-för-steg-dokumentation (med
-CLI-kommandon och skärmdumpar/kodblock) för både Linux och Windows.*
 
-Här följer... 
+Här följer steg-för-steg dokumentation över de moment som ingick i uppgiften. 
 
 ### Linux, bash-kommandon
 
-1. En arbetsmapp skapas med kommandot  
+1. En arbetsmapp skapas med kommandot mkdir,  
 `sudo mkdir -p /var/systementor/konsultdata`  
-Därefter skapas en tom fil i mappen med kommandot  
+Därefter skapas en tom fil i mappen med kommandot touch,  
 `sudo touch /var/systementor/konsultdata/anteckningar.txt`  
 <img src="images/Bash_1_2_groupadd.png" width="450" alt="Bash groupadd">
-1. I bilden syns även kommandot `sudo groupadd konsulter` som används för att skapa en användargrupp med namnet konsulter.
-1. Mappen konsultdata och allt i den ska tilldelas gruppen konsulter, för det används kommantot  
+
+1. I bilden syns även kommandot groupadd, som används för att skapa en användargrupp med namnet konsulter.  
+`sudo groupadd konsulter`
+
+1. Mappen konsultdata och allt i den ska tilldelas gruppen konsulter, för det används kommantot chown,  
 `sudo chown -R root:konsulter /var/systementor/konsultdata`  
-och sedan ställs behörigheter för mappen och filen in med kommandot  
+och sedan ställs behörigheter för mappen och filen in med kommandot chmod,  
 `sudo chmod 750 /var/systementor/konsultdata` och  
 `sudo chmod 640 /var/systementor/konsultdata/anteckningar.txt`
-<img src="images/Bash_3_chmod.png" width="550" alt="Bash chmod">  
-1. Behörigheterna inspekteras därefter med kommandot  
+<img src="images/Bash_3_chmod.png" width="550" alt="Bash chmod">
+
+1. Behörigheterna inspekteras därefter med kommandot ls -la,  
 `sudo ls -la /var/systementor/konsultdata/`  
 <img src="images/Bash_4_ls.png" width="350" alt="Bash ls">
-1. Till sist verifieras nätverksanslutningen genom att pinga till Windows-VM:en
-<img src="images/Bash_5_ping.png" width="350" alt="Bash ping">  
 
+1. Till sist verifieras nätverksanslutningen genom att skicka en ping till Windows-VM:en och undersöka nätverkskortets detaljer med kommandot ip sddr show,  
+`ip addr show`och `ping -c 5 192.168.1.51`  
+<img src="images/Bash_5_ping.png" width="550" alt="Bash ping">  
 
 
 ### Windows, powershell-kommandon
 
-<img src="images/Powershell_1_mkdir.png" width="350" alt="Powershell mkdir">
-<img src="images/Powershell_3_ping.png" width="350" alt="Powershell ping">
-<img src="images/Powershell_3_ipconfig.png" width="350" alt="Powershell ipconfig">  
+1. Först skapas mappen C:\Systementor\KonsultData med kommandot mkdir,  
+`mkdir C:\Systementor\KonsultData`  
+<img src="images/Powershell_1_mkdir.png" width="450" alt="Powershell mkdir">
 
-Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop från Linux-maskinen. AI föreslår att man stänger av brandväggen, men jag valde istället att öppna endast den regel som behövdes med kommandot `Enable-NetFirewallrule -Name "FPS-ICMP4-ERQ-In"`  
-<img src="images/Windows_firewall.png" width="350" alt="Windows firewall">
+1. Behörighetsstrukturen ska inspekteras med kommandot Get-Acl.  
+I bilden ovan syns att kommandot ger ett svar som slutar med "...", d.v.s. det finns mer att visa.  
+Med ett utökat kommando kan man se att rättigheter har ärvts vid skapandet av mappen och att t.ex. alla användare har "ReadAndExecute" rättigheter.  
+`(Get-Acl).Access | Format-Table IdentityReference,FileSystemRights,AccessControlType`  
+<img src="images/Powershell_2_get-acl.png" width="450" alt="Powershell get-acl">
+
+1. Till sist verifieras nätverksanslutningen genom att skicka en ping till Linux-VM:en och undersöka nätverkskortets detaljer med kommandot ipconfig /all,  
+<img src="images/Powershell_3_ping.png" width="450" alt="Powershell ping"><img src="images/Powershell_3_ipconfig.png" width="450" alt="Powershell ipconfig">  
+
+### Felsökning
+
+Det visade sig att Windows inbyggda brandvägg blockerade ping-anrop från Linux-maskinen. Frågar man AI om detta problem så föreslår den snabbt att man stänger av brandväggen (tillfälligt), men jag valde istället att öppna endast den regel som behövdes med kommandot,  
+`Enable-NetFirewallrule -Name "FPS-ICMP4-ERQ-In"`  
+<img src="images/Windows_firewall.png" width="450" alt="Windows firewall">
 
 
 
